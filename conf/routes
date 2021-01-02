@@ -32,3 +32,101 @@ GET    /account/summary           controllers.Default.todo
 GET    /account/info              controllers.Default.notFound
 GET    /account/transaction       controllers.Default.error
 GET     /account/about            controllers.Default.redirect(to="/hello-world/about")
+
+# name can be dynamic
+GET /routing/hello/:name          controllers.RoutingController.hello(name)
+
+# /routing/query?name=java
+GET /routing/query          controllers.RoutingController.query(name)
+
+# type mismatch; found   : String required: Integer, url parameter is string type [year], but the argument type in method is Integer
+#GET /routing/experience/:name/:year          controllers.RoutingController.experience(name, year)
+
+# Handling Type
+GET /routing/experience/:name/:year          controllers.RoutingController.experience(name, year: Integer)
+
+# Query type casting
+# /routing/query/experience?name=Java&year=8
+GET /routing/query/experience          controllers.RoutingController.experience(name, year: Integer)
+
+# /routing/download/logo.png
+# /routing/download/client1/images/logo/logo.png
+
+GET /routing/download/*imagePath      controllers.RoutingController.download(imagePath)
+
+# /routing/image/2313232 -- resolved
+# /routing/image/xyfdasfasd -- cannot be resolved 404
+
+
+GET /routing/image/$profileId<[0-9]+>   controllers.RoutingController.image(profileId)
+
+# /routing/image/xyfdasfasd works
+
+GET /routing/image/$profileId<[0-9a-zA-Z]+>   controllers.RoutingController.imageAlpha(profileId)
+
+# default values for routing
+
+# /routing/pages   // Type error
+# type mismatch; found   : String required: Integer
+# GET /routing/pages                            controllers.RoutingController.pages(start = 0, end = 10)
+
+GET /routing/pages                            controllers.RoutingController.pages(start: Integer = 0, end: Integer = 10)
+
+# /routing/pages/range?start=6&end=16
+GET /routing/pages/range                            controllers.RoutingController.pages(start: Integer, end: Integer)
+
+# optional
+# http://localhost:9000/routing/fitler?limit=20      - set limit to 20
+# http://localhost:9000/routing/fitler        - set limit t0 10 [default]
+GET /routing/fitler                                 controllers.RoutingController.filter(limit: Integer ?= 10)
+
+# whole object
+GET /routing/raw                                    controllers.RoutingController.rawRequest(request: Request)
+
+# Use PostName, POST /routing/post with raw text
+# by default, play uses set of modules, one of them csrf module, active on post/put method
+# for preventing CSRF - Cross Site Request Forgery
+
+# how to apply a filter to exlude csrf for only single route
+
+# FIXME: worked with csrf..
+
++ nocsrf
+POST /routing/post                                    controllers.RoutingController.postData(request: Request)
+
+
+GET /emails/get-email                                 controllers.EmailController.getEmail
+GET /emails/get-emails                                 controllers.EmailController.getEmails
+GET /emails/all                                         controllers.EmailController.all
+
+
+
++ nocsrf
+POST /emails/create-from-raw-text                       controllers.EmailController.createEmailFromRawText(request: Request)
+
+
++ nocsrf
+POST /emails/create-from-json                       controllers.EmailController.createEmailFromJson(request: Request)
+
+
++ nocsrf
+POST /emails/create-using-bp                       controllers.EmailController.createEmailUsingBP(request: Request)
+
+
++ nocsrf
+POST /emails/create-bulk-om                       controllers.EmailController.bulkMailsOM(request: Request)
+
+
+GET /di/get-stock/:id                                   controllers.DIController.getStock(id)
+
+GET /di2/get-stock/:id                                   controllers.DIController2.getStock(id)
+
+
+GET /account/get-account/:id                              controllers.AccountController.getAccount(id: Integer)
+
+
+GET /account/get-account-memory/:id                              controllers.AccountController.getAccountMemory(id: Integer)
+
+GET /account/get-account-mysql/:id                              controllers.AccountController.getAccountMySql(id: Integer)
+
+GET /account/get-account-pg/:id                              controllers.AccountController.getAccountPG(id: Integer)
