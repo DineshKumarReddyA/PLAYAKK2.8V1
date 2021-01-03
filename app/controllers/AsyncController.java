@@ -5,6 +5,8 @@ import java.util.concurrent.CompletableFuture;
 import  java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors; // thread pool/workers pool
 import java.util.concurrent.Future;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class AsyncController extends  Controller {
 
@@ -68,6 +70,7 @@ public class AsyncController extends  Controller {
         // Akka Dispatcher/Fork/thread.. end
     }
 
+    // Still blocking call for akka, BAD, waiting for result
     public Result executorHelloWorld() throws  Exception {
         System.out.println("-----------------------------------");
         System.out.println("calling async code ...");
@@ -119,9 +122,9 @@ public class AsyncController extends  Controller {
     // apply tax
     private CompletableFuture<Double> getProductPrice() {
         CompletableFuture<Double> completableFuture = CompletableFuture.supplyAsync( () -> {
-            System.out.println("getProductPrice executor thread id " + Thread.currentThread().getId());
+            //System.out.println("getProductPrice executor thread id " + Thread.currentThread().getId());
 
-            System.out.println("Got price 100");
+            //System.out.println("Got price 100");
             return 100.0;
         } );
 
@@ -157,6 +160,47 @@ public class AsyncController extends  Controller {
             System.out.println("Got the discount.." + result);
             return ok("Grand Total " + result);
         });
+    }
+
+
+
+    public CompletionStage<Result> combineFuturesFlowApi() {
+        // f(g(x))
+
+        // g(x) - get price
+        CompletableFuture<Double> completableFuture = getProductPrice()
+                                                        .thenCompose( price -> {
+                                                            return CompletableFuture.supplyAsync( () -> {
+                                                                return price * .80;
+                                                            });
+                                                        })
+                                                        .thenCompose( discountedPrice -> {
+                                                            return CompletableFuture.supplyAsync( () -> {
+                                                                return discountedPrice * 1.05; // 5% GET added
+                                                            });
+                                                        });
+
+        return completableFuture.thenApplyAsync( result -> {
+            return ok("Grand Total " + result);
+        });
+    }
+
+    public CompletionStage<Result> parallelFutures() {
+        CompletableFuture<String> f1 = CompletableFuture.supplyAsync( () -> "Akka");
+        CompletableFuture<String> f2 = CompletableFuture.supplyAsync( () -> "Play");
+        CompletableFuture<String> f3 = CompletableFuture.supplyAsync( () -> "Learning");
+
+        // CompletableFuture.allOf(f1, f2, f3); // return Void
+
+        CompletableFuture<String> finalOutput = CompletableFuture.supplyAsync(
+                () -> {
+                    return Stream.of(f1, f2, f3) // order of output collection
+                                 .map(CompletableFuture::join) // wait for all future to complete
+                                 .collect(Collectors.joining(" "));
+                }
+        );
+
+        return finalOutput.thenApplyAsync( outputString ->  ok(outputString));
     }
 
 //

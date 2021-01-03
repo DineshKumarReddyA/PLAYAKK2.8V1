@@ -1,12 +1,9 @@
 package modules;
 
 import com.google.inject.AbstractModule;
-import dao.AccountDao;
-import dao.AccountMemoryDaoImpl;
+import dao.*;
 
 import com.google.inject.name.Names;
-import dao.AccountMySqlImpl;
-import dao.AccountPGImpl;
 
 // for DI, associating interface to implementation
 // used to initialize the application startup/configuration/connections
@@ -35,5 +32,7 @@ public class BinderModule extends  AbstractModule {
         bind(AccountDao.class).annotatedWith(Names.named("memory")).to(AccountMemoryDaoImpl.class);
         bind(AccountDao.class).annotatedWith(Names.named("mysql")).to(AccountMySqlImpl.class);
         bind(AccountDao.class).annotatedWith(Names.named("pg")).to(AccountPGImpl.class);
+
+        bind(DiscountDao.class).to(DiscountRedisImpl.class).asEagerSingleton();
     }
 }

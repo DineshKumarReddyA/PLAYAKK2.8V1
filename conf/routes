@@ -144,3 +144,16 @@ GET /async/async-hello-world                              controllers.AsyncContr
 
 # good part, no blocking in akka threads
 GET /async/combine-futures                                   controllers.AsyncController.combineFutures
+
+GET /async/combine-futures-flow                                   controllers.AsyncController.combineFuturesFlowApi
+
+GET /async/parallel                                           controllers.AsyncController.parallelFutures
+
+
+
+
+
++ nocsrf
+POST  /discount/create-discount                                           controllers.DiscountController.createDiscount(request: Request)
+
+GET /discount/get-discount/:productId                                           controllers.DiscountController.getDiscount(productId)
