@@ -157,3 +157,7 @@ GET /async/parallel                                           controllers.AsyncC
 POST  /discount/create-discount                                           controllers.DiscountController.createDiscount(request: Request)
 
 GET /discount/get-discount/:productId                                           controllers.DiscountController.getDiscount(productId)
+
+
+GET /discount/get-discount-async/:productId                                           controllers.DiscountController.getDiscountAsync(productId)
+
