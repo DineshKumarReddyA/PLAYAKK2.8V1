@@ -130,3 +130,17 @@ GET /account/get-account-memory/:id                              controllers.Acc
 GET /account/get-account-mysql/:id                              controllers.AccountController.getAccountMySql(id: Integer)
 
 GET /account/get-account-pg/:id                              controllers.AccountController.getAccountPG(id: Integer)
+
+# blocking in akka threads
+GET /async/get-blocking-result                              controllers.AsyncController.getBlockingResult
+
+
+# blocking in akka threads
+# blocking get still
+GET /async/executor-hello-world                              controllers.AsyncController.executorHelloWorld
+
+# Good part, no blocking in akka threads..
+GET /async/async-hello-world                              controllers.AsyncController.completableFutureExample
+
+# good part, no blocking in akka threads
+GET /async/combine-futures                                   controllers.AsyncController.combineFutures
