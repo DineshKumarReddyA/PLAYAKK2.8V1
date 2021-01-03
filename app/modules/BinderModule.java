@@ -4,6 +4,10 @@ import com.google.inject.AbstractModule;
 import dao.*;
 
 import com.google.inject.name.Names;
+import repositories.JPAProductRepository;
+import repositories.ProductRepository;
+import v1.post.JPAPostRepository;
+import v1.post.PostRepository;
 
 // for DI, associating interface to implementation
 // used to initialize the application startup/configuration/connections
@@ -34,5 +38,9 @@ public class BinderModule extends  AbstractModule {
         bind(AccountDao.class).annotatedWith(Names.named("pg")).to(AccountPGImpl.class);
 
         bind(DiscountDao.class).to(DiscountRedisImpl.class).asEagerSingleton();
+
+        // given as ImplementedBy
+        // bind(ProductRepository.class).to(ProductRepository.class).asEagerSingleton();
+        bind(PostRepository.class).to(JPAPostRepository.class).asEagerSingleton();
     }
 }

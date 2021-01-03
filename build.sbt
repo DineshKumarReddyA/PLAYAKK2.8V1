@@ -14,3 +14,7 @@ libraryDependencies += "io.lettuce" % "lettuce-core" % "5.3.5.RELEASE"
 libraryDependencies += javaJpa
 libraryDependencies += "com.h2database" % "h2" % "1.4.199"
 libraryDependencies += "org.hibernate" % "hibernate-core" % "5.4.9.Final"
+
+libraryDependencies += "io.dropwizard.metrics" % "metrics-core" % "4.1.1"
+libraryDependencies += "com.palominolabs.http" % "url-builder" % "1.1.0"
+libraryDependencies += "net.jodah" % "failsafe" % "2.3.1"

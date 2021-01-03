@@ -210,3 +210,36 @@ Parallel
      do job 1
      do job 2
      do job 3 
+
+
+1. conf
+2. create META-INF in conf folder
+3. place persistence.xml in META-INF
+
+4. routes
+5. Product model
+6.Product Controller
+   7. ProductRepository
+    8. DatabaseExecutionContext
+    9. JPAProductRepository
+    
+built.sbt
+
+
+
+
+POST http://localhost:9000/v1/posts
+
+{
+"title": "Very good product",
+"body": "useful product"
+}
+
+GET http://localhost:9000/v1/posts
+
+
+GET /v1/posts/<<id>>
+PUT /v1/posts/<<id>>
+<<paylaod>>
+
+

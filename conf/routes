@@ -161,3 +161,6 @@ GET /discount/get-discount-async/:productId                                     
 + nocsrf
 POST /product/create            controllers.ProductController.addProduct(request: Request)
 GET /products                    controllers.ProductController.getProducts()
+
+
+->     /v1/posts                    posts.Routes
