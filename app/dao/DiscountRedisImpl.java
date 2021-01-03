@@ -19,9 +19,7 @@ public class DiscountRedisImpl implements  DiscountDao {
     StatefulRedisConnection<String, String> connection;
 
     public DiscountRedisImpl() {
-        redisClient = RedisClient.create("redis://password@endpoint/");
-
-
+         redisClient = RedisClient.create("redis://password@endpoint/");
 
         connection = redisClient.connect();
     }
