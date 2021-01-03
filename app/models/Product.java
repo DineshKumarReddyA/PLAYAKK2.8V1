@@ -15,6 +15,8 @@ public class Product {
 
     public  Integer price;
 
+    private String brandId;
+
     public Integer getPrice() {
         return price;
     }
@@ -37,5 +39,13 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(String brandId) {
+        this.brandId = brandId;
     }
 }

@@ -164,3 +164,6 @@ GET /products                    controllers.ProductController.getProducts()
 
 
 ->     /v1/posts                    posts.Routes
+
+
+->     /v1/ratings                    ratings.Routes

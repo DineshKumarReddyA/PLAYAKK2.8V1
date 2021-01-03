@@ -232,7 +232,8 @@ POST http://localhost:9000/v1/posts
 
 {
 "title": "Very good product",
-"body": "useful product"
+"body": "useful product",
+"productId": "11111"
 }
 
 GET http://localhost:9000/v1/posts
@@ -242,4 +243,57 @@ GET /v1/posts/<<id>>
 PUT /v1/posts/<<id>>
 <<paylaod>>
 
+-----------------------------------
 
+Post
+    PostData
+        add productId of String type as column
+    PostResource
+        add productId of String type
+
+Product 
+    add brandId of type string
+
+    // later after training
+            update
+            delete
+            get single product by id
+
+v1.rating
+    id - incremental
+    score - Int [1 to 5]
+    productId String
+    
+    separate route
+    RatingResource
+    RatingData
+    RatingController
+    RatingAction
+    RatingRepository
+    JPARatingRepository
+    rating.routes
+    RatingExecutionContext
+
+    patch the routes, config
+
+
+
+run 10000
+
+sbt run -dhttp.port= 
+
+
+
+POST http://localhost:9000/v1/ratings
+
+{
+"score": 5,
+"productId": "11111"
+}
+
+GET http://localhost:9000/v1/posts
+
+
+GET /v1/posts/<<id>>
+PUT /v1/posts/<<id>>
+<<paylaod>>

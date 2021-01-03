@@ -8,6 +8,8 @@ import repositories.JPAProductRepository;
 import repositories.ProductRepository;
 import v1.post.JPAPostRepository;
 import v1.post.PostRepository;
+import v1.rating.JPARatingRepository;
+import v1.rating.RatingRepository;
 
 // for DI, associating interface to implementation
 // used to initialize the application startup/configuration/connections
@@ -42,5 +44,7 @@ public class BinderModule extends  AbstractModule {
         // given as ImplementedBy
         // bind(ProductRepository.class).to(ProductRepository.class).asEagerSingleton();
         bind(PostRepository.class).to(JPAPostRepository.class).asEagerSingleton();
+        bind(RatingRepository.class).to(JPARatingRepository.class).asEagerSingleton();
+
     }
 }

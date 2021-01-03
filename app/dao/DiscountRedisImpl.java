@@ -8,8 +8,10 @@ import io.lettuce.core.*;
 import io.lettuce.core.api.sync.*;
 import io.lettuce.core.api.*;
 import models.Email;
+import play.inject.ApplicationLifecycle;
 import play.libs.Json;
 
+import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -18,10 +20,18 @@ public class DiscountRedisImpl implements  DiscountDao {
     RedisClient redisClient;
     StatefulRedisConnection<String, String> connection;
 
-    public DiscountRedisImpl() {
+    @Inject
+    public DiscountRedisImpl(ApplicationLifecycle lifecycle) {
          redisClient = RedisClient.create("redis://password@endpoint/");
 
         connection = redisClient.connect();
+
+
+        lifecycle.addStopHook( () -> {
+            System.out.println("***redis db cleanup");
+            // redisClient.shutdown();
+            return CompletableFuture.completedFuture(null);
+        });
     }
 
 

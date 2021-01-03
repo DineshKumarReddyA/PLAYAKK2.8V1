@@ -12,9 +12,10 @@ public class PostData {
     public PostData() {
     }
 
-    public PostData(String title, String body) {
+    public PostData(String title, String body, String productId) {
         this.title = title;
         this.body = body;
+        this.productId = productId;
     }
 
     @Id
@@ -22,4 +23,5 @@ public class PostData {
     public Long id;
     public String title;
     public String body;
+    public String productId;
 }

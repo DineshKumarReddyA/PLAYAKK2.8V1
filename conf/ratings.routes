@@ -1,0 +1,10 @@
+GET    /                     v1.rating.RatingController.list(request:Request)
+
++ nocsrf
+POST   /                     v1.rating.RatingController.create(request:Request)
+
+GET    /:id                 v1.rating.RatingController.show(request:Request,id)
+
++ nocsrf
+PUT    /:id                 v1.rating.RatingController.update(request:Request, id)
+

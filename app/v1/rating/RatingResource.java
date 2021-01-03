@@ -1,33 +1,31 @@
-package v1.post;
+package v1.rating;
 
 
 /**
  * Resource for the API.  This is a presentation class for frontend work.
  */
-public class PostResource {
+public class RatingResource {
     private String id;
     private String link;
-    private String title;
-    private String body;
+    private Integer score;
     private String productId;
 
-    public PostResource() {
+    public RatingResource() {
     }
 
-    public PostResource(String id, String link, String title, String body, String productId) {
+    public RatingResource(String id, String link, Integer score,  String productId) {
         this.id = id;
         this.link = link;
-        this.title = title;
-        this.body = body;
+        this.score = score;
         this.productId = productId;
     }
 
-    public PostResource(PostData data, String link) {
+    public RatingResource(RatingData data, String link) {
         this.id = data.id.toString();
         this.link = link;
-        this.title = data.title;
+        this.score = data.score;
         this.productId = data.productId;
-        this.body = data.body;
+
     }
 
     public String getId() {
@@ -38,12 +36,8 @@ public class PostResource {
         return link;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
+    public Integer getScore() {
+        return score;
     }
 
     public String getProductId() {

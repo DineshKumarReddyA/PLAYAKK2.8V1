@@ -1,4 +1,4 @@
-package v1.post;
+package v1.rating;
 
 import net.jodah.failsafe.CircuitBreaker;
 import net.jodah.failsafe.Failsafe;
@@ -21,35 +21,35 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
  * and circuit breaker.
  */
 @Singleton
-public class JPAPostRepository implements PostRepository {
+public class JPARatingRepository implements RatingRepository {
 
     private final JPAApi jpaApi;
-    private final PostExecutionContext ec;
-    private final CircuitBreaker<Optional<PostData>> circuitBreaker = new CircuitBreaker<Optional<PostData>>().withFailureThreshold(1).withSuccessThreshold(3);
+    private final RatingExecutionContext ec;
+    private final CircuitBreaker<Optional<RatingData>> circuitBreaker = new CircuitBreaker<Optional<RatingData>>().withFailureThreshold(1).withSuccessThreshold(3);
 
     @Inject
-    public JPAPostRepository(JPAApi api, PostExecutionContext ec) {
+    public JPARatingRepository(JPAApi api, RatingExecutionContext ec) {
         this.jpaApi = api;
         this.ec = ec;
     }
 
     @Override
-    public CompletionStage<Stream<PostData>> list() {
+    public CompletionStage<Stream<RatingData>> list() {
         return supplyAsync(() -> wrap(em -> select(em)), ec);
     }
 
     @Override
-    public CompletionStage<PostData> create(PostData postData) {
+    public CompletionStage<RatingData> create(RatingData postData) {
         return supplyAsync(() -> wrap(em -> insert(em, postData)), ec);
     }
 
     @Override
-    public CompletionStage<Optional<PostData>> get(Long id) {
+    public CompletionStage<Optional<RatingData>> get(Long id) {
         return supplyAsync(() -> wrap(em -> Failsafe.with(circuitBreaker).get(() -> lookup(em, id))), ec);
     }
 
     @Override
-    public CompletionStage<Optional<PostData>> update(Long id, PostData postData) {
+    public CompletionStage<Optional<RatingData>> update(Long id, RatingData postData) {
         return supplyAsync(() -> wrap(em -> Failsafe.with(circuitBreaker).get(() -> modify(em, id, postData))), ec);
     }
 
@@ -57,28 +57,27 @@ public class JPAPostRepository implements PostRepository {
         return jpaApi.withTransaction(function);
     }
 
-    private Optional<PostData> lookup(EntityManager em, Long id) throws SQLException {
-        // throw new SQLException("Call this to cause the circuit breaker to trip");
-        return Optional.ofNullable(em.find(PostData.class, id));
+    private Optional<RatingData> lookup(EntityManager em, Long id) throws SQLException {
+       // throw new SQLException("Call this to cause the circuit breaker to trip");
+        return Optional.ofNullable(em.find(RatingData.class, id));
     }
 
-    private Stream<PostData> select(EntityManager em) {
-        TypedQuery<PostData> query = em.createQuery("SELECT p FROM PostData p", PostData.class);
+    private Stream<RatingData> select(EntityManager em) {
+        TypedQuery<RatingData> query = em.createQuery("SELECT p FROM RatingData p", RatingData.class);
         return query.getResultList().stream();
     }
 
-    private Optional<PostData> modify(EntityManager em, Long id, PostData postData) throws InterruptedException {
-        final PostData data = em.find(PostData.class, id);
+    private Optional<RatingData> modify(EntityManager em, Long id, RatingData postData) throws InterruptedException {
+        final RatingData data = em.find(RatingData.class, id);
         if (data != null) {
-            data.title = postData.title;
-            data.body = postData.body;
+            data.score = postData.score;
             data.productId = postData.productId;
         }
-        Thread.sleep(10000L); // ??
+        Thread.sleep(10000L);
         return Optional.ofNullable(data);
     }
 
-    private PostData insert(EntityManager em, PostData postData) {
+    private RatingData insert(EntityManager em, RatingData postData) {
         return em.merge(postData);
     }
 }
