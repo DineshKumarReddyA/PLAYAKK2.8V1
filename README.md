@@ -305,3 +305,38 @@ export PLAY_HTTPS_PORT=9002
 export PLAY_HTTP_ADDRESS=127.0.0.1
 
 sudo netstat -tunlp | grep 9000        
+
+
+Controller vs Actor
+
+gRPC +
+HTTP + 
+WS
+
+Actor
+    Cross Cutting Concerns
+    Error handling
+    Low level control
+    
+    Business Logic + Inject DAO
+    Streaming is easier/effective
+
+Controller
+    Http protocol
+        Request/Response
+        Web support --> actor [BL]
+        WS          --> actor [BL]
+        gRPC        --> actor [BL]
+
+
+
+
+
+
+
+
+
+
+
+
+

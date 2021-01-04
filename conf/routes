@@ -187,3 +187,12 @@ GET /actor/get-config      controllers.ActorController.getConfig
 
 
 ->     /v1/ratings                    ratings.Routes
+
+
+GET /printer/on             controllers.PrinterController.onCommand
+GET /printer/off             controllers.PrinterController.offCommand
+GET /printer/self-test             controllers.PrinterController.startSelfTestCommand
+GET /printer/print             controllers.PrinterController.printCommand
+GET /printer/sample             controllers.PrinterController.printSampleTestCommand
+GET /printer/standby             controllers.PrinterController.standbyCommand
+GET /printer/resume             controllers.PrinterController.resumeCommand

@@ -62,7 +62,11 @@ public class AsyncController extends  Controller {
 
             //completableFuture is visible here/ closure concept
             // the result can be received usign future.get or unblcoking future get
+                // on successful completion
             completableFuture.complete("Hello World"); // result after computing/io
+
+                // on error completion/ exception
+                // completableFuture.completeExceptionally(t); // should be handled by handle method
             // return the result with future
              // Executhor Thread pool end
         });
