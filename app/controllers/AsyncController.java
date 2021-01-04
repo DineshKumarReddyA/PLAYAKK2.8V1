@@ -1,6 +1,9 @@
 package controllers;
 
 import play.mvc.*;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import  java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors; // thread pool/workers pool
@@ -192,6 +195,7 @@ public class AsyncController extends  Controller {
 
         // CompletableFuture.allOf(f1, f2, f3); // return Void
 
+
         CompletableFuture<String> finalOutput = CompletableFuture.supplyAsync(
                 () -> {
                     return Stream.of(f1, f2, f3) // order of output collection
@@ -201,6 +205,47 @@ public class AsyncController extends  Controller {
         );
 
         return finalOutput.thenApplyAsync( outputString ->  ok(outputString));
+    }
+
+    public CompletionStage<Result> parallelFutures2() {
+        CompletableFuture<String> f1 = CompletableFuture.supplyAsync( () -> "Akka");
+        CompletableFuture<String> f2 = CompletableFuture.supplyAsync( () -> "Play");
+        CompletableFuture<String> f3 = CompletableFuture.supplyAsync( () -> "Learning");
+
+        List<CompletableFuture<String>> completableFutures = Arrays.asList(f1, f2, f3);
+
+        CompletableFuture<Void> allFutures = CompletableFuture
+                .allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()]));
+
+
+        CompletableFuture<List<String>> allCompletableFuture = allFutures.thenApply(future -> {
+            return completableFutures.stream()
+                    .map(completableFuture -> completableFuture.join())
+                    .collect(Collectors.toList());
+        });
+
+
+
+        return allCompletableFuture.thenApplyAsync( outputString ->  ok( "" + outputString.size()));
+    }
+
+
+    public CompletionStage<Result> handleError() {
+        // String name = null; // try this and try next
+        String name  = "Krish";
+
+        CompletableFuture<String> completableFuture
+                =  CompletableFuture.supplyAsync(() -> {
+            if (name == null) {
+                throw new RuntimeException("Computation error!");
+            }
+            return "Hello, " + name;
+        }).handle((s, t) -> s != null ? s : "Hello, Stranger!");
+
+        return completableFuture
+                .thenApplyAsync(s -> ok("Got result: " + s));
+
+
     }
 
 //

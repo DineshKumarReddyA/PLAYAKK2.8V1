@@ -15,14 +15,25 @@ import javax.inject.Inject;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-
+import com.typesafe.config.Config;
 public class DiscountRedisImpl implements  DiscountDao {
     RedisClient redisClient;
     StatefulRedisConnection<String, String> connection;
+    Config config;
 
     @Inject
-    public DiscountRedisImpl(ApplicationLifecycle lifecycle) {
-         redisClient = RedisClient.create("redis://password@endpoint/");
+    public DiscountRedisImpl(ApplicationLifecycle lifecycle, Config config) {
+        this.config = config;
+        // redisClient = RedisClient.create("redis://password@endpoint/");
+
+        String redisUrl = config.getString("redis.url");
+        if (redisUrl == null ||  redisUrl.isEmpty()) {
+            redisUrl = "redis://localhost";
+        }
+        System.out.println("**Redis Url " + redisUrl);
+
+        // redisClient = RedisClient.create("redis://v8iWDhQEfrTtU2UTC11mZHrOJOaQn2jr@redis-18350.c1.ap-southeast-1-1.ec2.cloud.redislabs.com:18350/");
+        redisClient = RedisClient.create(redisUrl);
 
         connection = redisClient.connect();
 

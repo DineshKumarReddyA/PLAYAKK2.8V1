@@ -297,3 +297,11 @@ GET http://localhost:9000/v1/posts
 GET /v1/posts/<<id>>
 PUT /v1/posts/<<id>>
 <<paylaod>>
+
+
+> run -Dhttp.port=1234
+> export PLAY_HTTP_PORT=9001
+export PLAY_HTTPS_PORT=9002
+export PLAY_HTTP_ADDRESS=127.0.0.1
+
+sudo netstat -tunlp | grep 9000        

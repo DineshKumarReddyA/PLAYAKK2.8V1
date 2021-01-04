@@ -148,7 +148,9 @@ GET /async/combine-futures                                   controllers.AsyncCo
 GET /async/combine-futures-flow                                   controllers.AsyncController.combineFuturesFlowApi
 
 GET /async/parallel                                           controllers.AsyncController.parallelFutures
+GET /async/parallel2                                           controllers.AsyncController.parallelFutures2
 
+GET /async/error                             controllers.AsyncController.handleError
 
 
 
@@ -161,6 +163,24 @@ GET /discount/get-discount-async/:productId                                     
 + nocsrf
 POST /product/create            controllers.ProductController.addProduct(request: Request)
 GET /products                    controllers.ProductController.getProducts()
+
+
+GET /hello/:message             controllers.HelloActorController.sayHello(message)
+GET /hello/timeout/:message     controllers.HelloActorController.timeoutMessage(message)
+
+GET /orders/:orderId             controllers.OrderController.getOrder(orderId: Long)
+
++ nocsrf
+POST /orders/create               controllers.OrderController.createOrder(request: Request)
+
+
+
+
+
+
+
+GET /actor/say-hello/:name      controllers.ActorController.sayHello(name)
+GET /actor/get-config      controllers.ActorController.getConfig
 
 
 ->     /v1/posts                    posts.Routes
